@@ -1,52 +1,76 @@
-let addInput = document.querySelector("#addInput")
-let addBtn = document.querySelector("#addBtn")
-let divList = document.querySelector(".listHolder ")
-let isimler = []
+let name = prompt("Adınız nedir?")
+let info = document.querySelector("#myName")
+info.innerHTML = `${name}`
 
+const addInput = document.querySelector('#add-task')
 
-function addLists(){
-    if(addInput.value.length < 3){
-        alert("En az 3 karaker giriniz.")
-    }
-    else{
-        const ul = divList.querySelector("ul")
-        const li = document.createElement("li")
-        li.innerHTML = addInput.value
-        isimler.push(addInput.value)
-        localStorage.setItem("isim",JSON.stringify(isimler)) 
-        addInput.value = ""
-        ul.appendChild(li)
-        
-    }
-}
+const addBtn =  document.querySelector('#add-btn')
+const delTaskBtn  =  document.querySelector('#del-btn')
 
-addBtn.addEventListener("click",() => {
-    addLists()  
-})
+const renameBtn = document.querySelector('.rename-task')
+const updateBtn = document.querySelector('.update-task')
+const delBtn = document.querySelector('.del-task')
 
-addInput.addEventListener("keyup", (event) => {
-    if(event.which === 13) {
-        addLists()
-    }
-})
+const newTasks = document.querySelector('.new-tasks')
 
-
-// ekle.addEventListener("click", () =>{
-//     if (isim.length < 3 && isim.length==null) {   
-//         alert("En az 3 karaker giriniz.")
-
-//     }
-//     else{
-//         isimler.push(isim)
-//         isim = "<ul>";
-//         for (let i = 0; i<isimler.length; i++) {
-//             isim += "<li>" + isimler[i] + "</li>";
-//         }
-//         isim += "</ul>";
-//         localStorage.setItem("isim", JSON.stringify(isimler))
-        
-//         let info = document.getElementById("isim")
-//         info.innerHTML = `${isim}`     
-//     }
+// delTaskBtn.addEventListener('click', () => {
+//     addInput.value = ''
 // })
 
+function addTodo(todo){
+    let todoTask  = ` 
+                <div class="task">
+					<input type="text" id="added-task" name='todo' disabled value="${todo}">
+                    <div>
+                        <input type="button" value="✔️" name='update' title='update task' class="update-task">
+                        <input type="button" value="✏️" name='rename' title='rename task' class="rename-task">
+                        <input type="button" value="❌" name='delete' title='delete task' class="del-task">
+                    </div>
+                </div>
+                ` 
+    newTasks.innerHTML += todoTask
+}
+
+addBtn.addEventListener('click', (e)=> {
+    let todo = addInput.value
+    todo = todo.trim()
+    if (todo.length < 3){
+        alert('En az 3 karakter giriniz.')
+    }else{
+        console.log(todo)
+        addTodo(todo)
+        addInput.value = ''
+        updateTodo()
+    }
+})
+
+
+function updateTodo(){
+
+    let task  = document.querySelectorAll('.task')
+
+    task.forEach((t) => {
+        // console.log(t.children)
+        t.addEventListener('click', e =>{
+
+            if(e.target.classList.contains('rename-task')){
+                
+                console.log('rename')
+                if (t.children[0].disabled){
+                    t.children[0].disabled = false
+                }
+            }else if(e.target.classList.contains('del-task')) {
+                t.remove()
+            }
+            
+            else if (e.target.classList.contains('update-task')){
+                console.log(t.children[0].disabled)
+                if (t.children[0].disabled == false){
+                    t.children[0].disabled = true
+                }
+            }
+        })
+
+    })
+    
+}
