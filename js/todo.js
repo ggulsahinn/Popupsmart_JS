@@ -11,7 +11,7 @@ const renameBtn = document.querySelector('.rename-task')
 const updateBtn = document.querySelector('.update-task')
 const delBtn = document.querySelector('.del-task')
 
-const newTasks = document.querySelector('.new-tasks')
+const tasks = document.querySelector('.tasks')
 
 // delTaskBtn.addEventListener('click', () => {
 //     addInput.value = ''
@@ -28,19 +28,26 @@ function addTodo(todo){
                     </div>
                 </div>
                 ` 
-    newTasks.innerHTML += todoTask
+    tasks.innerHTML += todoTask
 }
 
-addBtn.addEventListener('click', (e)=> {
+addBtn.addEventListener('click', ()=> {
     let todo = addInput.value
-    todo = todo.trim()
+    
     if (todo.length < 3){
         alert('En az 3 karakter giriniz.')
     }else{
+        todo = todo.trim()
         console.log(todo)
         addTodo(todo)
         addInput.value = ''
         updateTodo()
+    }
+})
+
+addInput.addEventListener("keyup", (event) => {
+    if(event.which === 13) {
+        addTodo(todo)
     }
 })
 
